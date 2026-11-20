@@ -1,4 +1,5 @@
 services:
+  # Base de données pour les tests d'intégration (Atelier 1)
   db:
     image: postgres:16-alpine
     environment:
@@ -6,4 +7,36 @@ services:
       POSTGRES_PASSWORD: test
       POSTGRES_DB: testdb
     ports:
-      - "5433:5432"
+      - "5433:5432"  # Adaptation pour ton Mac (évite le conflit avec le port 5432 local)
+
+  # Base de données dédiée à SonarQube (Atelier 2)
+  sonar-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+      POSTGRES_DB: sonar
+    volumes:
+      - sonar_db:/var/lib/postgresql/data
+
+  # Serveur SonarQube (Atelier 2)
+  sonarqube:
+    image: sonarqube:lts-community  # Version LTS plus stable au téléchargement
+    depends_on:
+      - sonar-db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://sonar-db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonar_data:/opt/sonarqube/data
+      - sonar_extensions:/opt/sonarqube/extensions
+      - sonar_logs:/opt/sonarqube/logs
+
+volumes:
+  sonar_db:
+  sonar_data:
+  sonar_extensions:
+  sonar_logs:

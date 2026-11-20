@@ -1,0 +1,18 @@
+<form id="f">
+  <input id="email" type="email" placeholder="Email">
+  <input id="password" type="password" placeholder="Mot de passe">
+  <button type="submit">Se connecter</button>
+  <p id="erreur"></p>
+</form>
+<script>
+  document.getElementById('f').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const r = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: document.getElementById('email').value, password: document.getElementById('password').value })
+    });
+    if (r.ok) location.href = '/dashboard.html';
+    else document.getElementById('erreur').textContent = 'Identifiants invalides';
+  });
+</script>
