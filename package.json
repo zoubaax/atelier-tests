@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "test:cov": "jest --runInBand --coverage",
     "start": "node src/server.js",
     "test": "jest",
     "test:unit": "jest tests/unit --coverage",
@@ -23,6 +24,9 @@
     "supertest": "^7.3.1"
   },
   "jest": {
-    "testPathIgnorePatterns": ["/node_modules/", "/e2e/"]
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/e2e/"
+    ]
   }
 }
